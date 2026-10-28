@@ -1,4 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
+import { Suspense } from "react";
+import { Show, SignInButton, UserButton } from "@clerk/nextjs";
 
 const NAV_LINKS = [
   "Home",
@@ -59,8 +62,8 @@ const Navbar = () => {
         <nav>
           <div className="flex items-center justify-between px-6 lg:px-12 h-16">
             {/* Logo */}
-            <a
-              href="#"
+            <Link
+              href="/"
               className="flex shrink-0 items-center gap-2.5 leading-none"
               aria-label="Kalavana home"
             >
@@ -75,7 +78,7 @@ const Navbar = () => {
               <span className="font-serif text-xl font-semibold tracking-wide text-charcoal">
                 Kalavana
               </span>
-            </a>
+            </Link>
 
             {/* Center nav */}
             <ul className="hidden lg:flex items-center gap-1">
@@ -83,7 +86,7 @@ const Navbar = () => {
                 const dropdown = getDropdown(link);
                 return (
                   <li key={link} className="nav-item relative">
-                    <a
+                    <Link
                       href="#"
                       className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-charcoal transition-colors duration-150 hover:text-terracotta"
                     >
@@ -103,18 +106,18 @@ const Navbar = () => {
                           />
                         </svg>
                       )}
-                    </a>
+                    </Link>
                     {dropdown && (
                       <div className="nav-dropdown hidden absolute top-full left-0 pt-1 min-w-45 z-50">
                         <div className="border border-sand-dark bg-ivory py-2 shadow-md">
                           {dropdown.map((item) => (
-                            <a
+                            <Link
                               key={item}
                               href="#"
                               className="block px-4 py-2 text-sm text-charcoal-light transition-colors duration-100 hover:text-terracotta"
                             >
                               {item}
-                            </a>
+                            </Link>
                           ))}
                         </div>
                       </div>
@@ -144,6 +147,22 @@ const Navbar = () => {
                   <path d="M15.5 15.5L20 20" strokeLinecap="round" />
                 </svg>
               </label>
+
+              <Suspense fallback={null}>
+                <Show when="signed-out">
+                  <SignInButton mode="modal">
+                    <button
+                      type="button"
+                      className="whitespace-nowrap rounded-sm bg-terracotta px-4 py-2 text-sm font-medium text-ivory transition-colors hover:bg-terracotta-light"
+                    >
+                      Sign in
+                    </button>
+                  </SignInButton>
+                </Show>
+                <Show when="signed-in">
+                  <UserButton />
+                </Show>
+              </Suspense>
 
               {/* Mobile hamburger */}
               <label
