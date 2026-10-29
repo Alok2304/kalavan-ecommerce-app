@@ -1,124 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
+import AddToCartButton from "@/components/AddToCartButton";
+import { crafts } from "@/lib/crafts";
 
 export const metadata: Metadata = {
   title: "Shop Maharashtrian Crafts | Kalavana",
   description:
     "Explore authentic textiles, pottery, jewellery, woodcraft and home décor handmade by artisans across Maharashtra.",
 };
-
-const crafts = [
-  {
-    title: "Kaas Floral Paithani",
-    artisan: "Savitri Handlooms",
-    place: "Yeola, Maharashtra",
-    price: 8499,
-    image:
-      "https://images.unsplash.com/photo-1717586756136-d9a3eeb1fa6f?auto=format&fit=crop&w=900&q=85",
-    alt: "Close detail of a richly woven floral Indian textile",
-    href: "/product",
-  },
-  {
-    title: "Warli Terracotta Urli",
-    artisan: "Ramesh Mati Kala",
-    place: "Nashik, Maharashtra",
-    price: 1850,
-    image:
-      "https://images.unsplash.com/photo-1699371830139-cb02e94878f1?auto=format&fit=crop&w=900&q=85",
-    alt: "Handmade terracotta vessels displayed in an artisan workshop",
-  },
-  {
-    title: "Kolhapuri Saaj Necklace",
-    artisan: "Anita Jewel Works",
-    place: "Kolhapur, Maharashtra",
-    price: 3299,
-    image:
-      "https://images.unsplash.com/photo-1620619767323-b95a89183081?auto=format&fit=crop&w=900&q=85",
-    alt: "Colourful handcrafted beaded necklaces on a wooden display",
-  },
-  {
-    title: "Sawantwadi Ganjifa Set",
-    artisan: "Naik Chitrashala",
-    place: "Sawantwadi, Maharashtra",
-    price: 2190,
-    image:
-      "https://images.unsplash.com/photo-1678082309214-3b2941e387f8?auto=format&fit=crop&w=900&q=85",
-    alt: "Woman artisan hand painting a traditional craft",
-  },
-  {
-    title: "Hand-thrown Clay Surahi",
-    artisan: "Kumbhar Studio",
-    place: "Pune, Maharashtra",
-    price: 1240,
-    image:
-      "https://images.unsplash.com/photo-1493106641515-6b5631de4bb9?auto=format&fit=crop&w=900&q=85",
-    alt: "Potter shaping a clay vessel by hand",
-  },
-  {
-    title: "Bamboo Weave Lantern",
-    artisan: "Tribal Craft Co.",
-    place: "Gadchiroli, Maharashtra",
-    price: 1299,
-    image:
-      "https://images.unsplash.com/photo-1764218057040-5427eb0f1f5a?auto=format&fit=crop&w=900&q=85",
-    alt: "Colourful handmade lanterns and woven baskets",
-  },
-  {
-    title: "Paithani Table Runner",
-    artisan: "Morya Weaves",
-    place: "Aurangabad, Maharashtra",
-    price: 2750,
-    image:
-      "https://images.unsplash.com/photo-1588140686379-1b76a52103dc?auto=format&fit=crop&w=900&q=85",
-    alt: "Detailed red, white and blue handwoven textile",
-  },
-  {
-    title: "Carved Devrai Figurine",
-    artisan: "Shinde Woodcraft",
-    place: "Sawantwadi, Maharashtra",
-    price: 1680,
-    image:
-      "https://images.unsplash.com/photo-1712210332599-0cb76e647e43?auto=format&fit=crop&w=900&q=85",
-    alt: "Artisan seated among handcrafted wooden sculptures",
-  },
-  {
-    title: "Tamba Serving Bowl",
-    artisan: "Tambat Ali Collective",
-    place: "Pune, Maharashtra",
-    price: 2450,
-    image:
-      "https://images.unsplash.com/photo-1678082310070-26bdadc06a34?auto=format&fit=crop&w=900&q=85",
-    alt: "Artisan surrounded by rows of handcrafted bowls",
-  },
-  {
-    title: "Mor Bagh Silk Stole",
-    artisan: "Yeola Loom House",
-    place: "Yeola, Maharashtra",
-    price: 3890,
-    image:
-      "https://images.unsplash.com/photo-1717585679395-bbe39b5fb6bc?auto=format&fit=crop&w=900&q=85",
-    alt: "A layered collection of colourful handwoven cloth",
-  },
-  {
-    title: "Rustic Matka Trio",
-    artisan: "Pragati Pottery",
-    place: "Pen, Maharashtra",
-    price: 1490,
-    image:
-      "https://images.unsplash.com/photo-1699371829505-e9fdde74e869?auto=format&fit=crop&w=900&q=85",
-    alt: "A collection of brown and white handmade vases",
-  },
-  {
-    title: "Mohan Mala Bracelet",
-    artisan: "Suvarna Karigari",
-    place: "Kolhapur, Maharashtra",
-    price: 1899,
-    image:
-      "https://images.unsplash.com/photo-1616756141603-6d37d5cde2a2?auto=format&fit=crop&w=900&q=85",
-    alt: "Gold and silver handcrafted beaded bracelet",
-  },
-];
 
 function CartIcon() {
   return (
@@ -149,21 +39,11 @@ function CraftCard({ craft }: { craft: (typeof crafts)[number] }) {
   return (
     <article className="group flex min-w-0 flex-col">
       <div className="relative aspect-4/5 overflow-hidden bg-sand">
-        {craft.href ? (
-          <Link
-            href={craft.href}
-            aria-label={`View ${craft.title}`}
-            className="block h-full"
-          >
-            <Image
-              src={craft.image}
-              alt={craft.alt}
-              className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-							width={900}
-							height={1125}
-            />
-          </Link>
-        ) : (
+        <Link
+          href={`/crafts/${craft.slug}`}
+          aria-label={`View ${craft.title}`}
+          className="block h-full"
+        >
           <Image
             src={craft.image}
             alt={craft.alt}
@@ -171,20 +51,27 @@ function CraftCard({ craft }: { craft: (typeof crafts)[number] }) {
             width={900}
             height={1125}
           />
-        )}
+        </Link>
 
-        <button
-          type="button"
+        <AddToCartButton
+          product={{
+            id: `craft-${craft.slug}`,
+            name: craft.title,
+            artisan: craft.artisan,
+            price: craft.price,
+            image: craft.image,
+            alt: craft.alt,
+          }}
           aria-label={`Add ${craft.title} to cart`}
           title={`Add ${craft.title} to cart`}
           className="absolute right-3 top-3 flex size-11 items-center justify-center rounded-full border border-sand-dark bg-ivory/95 text-charcoal shadow-sm transition-all duration-200 hover:border-terracotta hover:bg-terracotta hover:text-ivory focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta"
         >
           <CartIcon />
-        </button>
+        </AddToCartButton>
       </div>
 
       <div className="flex flex-1 flex-col pt-4">
-        {craft.href ? <Link href={craft.href}>{title}</Link> : title}
+        <Link href={`/crafts/${craft.slug}`}>{title}</Link>
         <p className="mt-2 text-sm font-medium text-charcoal-light">
           {craft.artisan}
         </p>

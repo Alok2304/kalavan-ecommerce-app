@@ -53,7 +53,7 @@ const Footer = () => {
               <li key={link}>
                 <a
                   href="#"
-                  className="text-sm text-muted transition-colors duration-150 hover:text-terracotta"
+                  className="text-sm text-charcoal-light transition-colors duration-150 hover:text-terracotta"
                 >
                   {link}
                 </a>
@@ -75,7 +75,7 @@ const Footer = () => {
               <li key={link}>
                 <a
                   href="#"
-                  className="text-sm text-muted transition-colors duration-150 hover:text-terracotta"
+                  className="text-sm text-charcoal-light transition-colors duration-150 hover:text-terracotta"
                 >
                   {link}
                 </a>
@@ -97,7 +97,7 @@ const Footer = () => {
               <li key={link}>
                 <a
                   href="#"
-                  className="text-sm text-muted transition-colors duration-150 hover:text-terracotta"
+                  className="text-sm text-charcoal-light transition-colors duration-150 hover:text-terracotta"
                 >
                   {link}
                 </a>
@@ -117,7 +117,7 @@ const Footer = () => {
           <div className="flex flex-col gap-3">
             <a
               href="#"
-              className="inline-flex items-center gap-2 text-sm text-muted transition-colors duration-150 hover:text-terracotta"
+              className="inline-flex items-center gap-2 text-sm text-charcoal-light transition-colors duration-150 hover:text-terracotta"
             >
               <svg
                 width="16"
@@ -141,7 +141,7 @@ const Footer = () => {
             </a>
             <a
               href="#"
-              className="inline-flex items-center gap-2 text-sm text-muted transition-colors duration-150 hover:text-terracotta"
+              className="inline-flex items-center gap-2 text-sm text-charcoal-light transition-colors duration-150 hover:text-terracotta"
             >
               <svg
                 width="16"

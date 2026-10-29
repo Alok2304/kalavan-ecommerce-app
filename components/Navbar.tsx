@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
-import { Show, SignInButton, UserButton } from "@clerk/nextjs";
+import { Show, UserButton } from "@clerk/nextjs";
+import CartLink from "@/components/CartLink";
 
 const NAV_LINKS = [
   "Home",
@@ -150,16 +151,15 @@ const Navbar = () => {
 
               <Suspense fallback={null}>
                 <Show when="signed-out">
-                  <SignInButton mode="modal">
-                    <button
-                      type="button"
+                  <Link
+                      href="/sign-in"
                       className="whitespace-nowrap rounded-sm bg-terracotta px-4 py-2 text-sm font-medium text-ivory transition-colors hover:bg-terracotta-light"
                     >
                       Sign in
-                    </button>
-                  </SignInButton>
+                  </Link>
                 </Show>
                 <Show when="signed-in">
+                  <CartLink />
                   <UserButton />
                 </Show>
               </Suspense>

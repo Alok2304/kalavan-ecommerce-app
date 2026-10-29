@@ -1,4 +1,5 @@
 import Image from "next/image";
+import AddToCartButton from "@/components/AddToCartButton";
 
 const products = [
   {
@@ -114,12 +115,13 @@ function ProductCard({ product }: { product: (typeof products)[0] }) {
 
         {/* Add to Cart — CSS hover reveal */}
         <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-          <button
+          <AddToCartButton
+            product={{ id: `featured-${product.id}`, name: product.name, artisan: product.artisan, price: product.price, image: product.image, alt: product.alt }}
             className="w-full py-3 text-sm font-medium tracking-wide transition-colors duration-150 hover:bg-[#B85C38]"
             style={{ backgroundColor: "#2C2416", color: "#FAF7F2" }}
           >
             Add to Cart
-          </button>
+          </AddToCartButton>
         </div>
       </div>
 
