@@ -4,14 +4,7 @@ import { Suspense } from "react";
 import { Show, UserButton } from "@clerk/nextjs";
 import CartLink from "@/components/CartLink";
 
-const NAV_LINKS = [
-  "Home",
-  "Shop",
-  "Crafts",
-  "Artisans",
-  "Collections",
-  "About",
-];
+const NAV_LINKS = ["Home", "Shop", "Crafts", "Artisans", "About"];
 
 const SHOP_DROPDOWN = [
   "All Products",
@@ -22,6 +15,7 @@ const SHOP_DROPDOWN = [
   "Home Decor",
   "Festive Crafts",
 ];
+
 const CRAFTS_DROPDOWN = [
   "Paithani",
   "Warli Art",
@@ -30,6 +24,14 @@ const CRAFTS_DROPDOWN = [
   "Terracotta",
   "Bamboo Craft",
 ];
+
+function getNavHref(link: string) {
+  if (link === "Home") return "/";
+  if (link === "Shop" || link === "Crafts") return "/crafts";
+  if (link === "Artisans") return "/artisans";
+  if (link === "About") return "/about";
+  return "#";
+}
 
 function getDropdown(link: string) {
   if (link === "Shop") return SHOP_DROPDOWN;
@@ -46,12 +48,10 @@ const Navbar = () => {
         #mobile-toggle:checked ~ nav .hamburger-top { transform: rotate(45deg) translate(5px, 5px); }
         #mobile-toggle:checked ~ nav .hamburger-mid { opacity: 0; }
         #mobile-toggle:checked ~ nav .hamburger-bot { transform: rotate(-45deg) translate(5px, -5px); }
-        #search-toggle:checked ~ nav .search-bar { display: flex; }
         .nav-item:hover .nav-dropdown { display: block; }
       `}</style>
 
       <input type="checkbox" id="mobile-toggle" className="hidden" />
-      <input type="checkbox" id="search-toggle" className="hidden" />
 
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-sand-dark bg-ivory">
         {/* Announcement Bar */}
@@ -88,7 +88,7 @@ const Navbar = () => {
                 return (
                   <li key={link} className="nav-item relative">
                     <Link
-                      href="#"
+                      href={getNavHref(link)}
                       className="flex items-center gap-1 px-3 py-2 text-sm font-medium text-charcoal transition-colors duration-150 hover:text-terracotta"
                     >
                       {link}
@@ -114,7 +114,7 @@ const Navbar = () => {
                           {dropdown.map((item) => (
                             <Link
                               key={item}
-                              href="#"
+                              href="/crafts"
                               className="block px-4 py-2 text-sm text-charcoal-light transition-colors duration-100 hover:text-terracotta"
                             >
                               {item}
@@ -130,32 +130,13 @@ const Navbar = () => {
 
             {/* Right icons */}
             <div className="flex items-center gap-4">
-              {/* Search toggle */}
-              <label
-                htmlFor="search-toggle"
-                className="hidden cursor-pointer items-center text-charcoal transition-colors hover:text-terracotta sm:flex"
-                aria-label="Toggle search"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.75"
-                >
-                  <circle cx="10.5" cy="10.5" r="6.5" />
-                  <path d="M15.5 15.5L20 20" strokeLinecap="round" />
-                </svg>
-              </label>
-
               <Suspense fallback={null}>
                 <Show when="signed-out">
                   <Link
-                      href="/sign-in"
-                      className="whitespace-nowrap rounded-sm bg-terracotta px-4 py-2 text-sm font-medium text-ivory transition-colors hover:bg-terracotta-light"
-                    >
-                      Sign in
+                    href="/sign-in"
+                    className="whitespace-nowrap rounded-sm bg-terracotta px-4 py-2 text-sm font-medium text-ivory transition-colors hover:bg-terracotta-light"
+                  >
+                    Sign in
                   </Link>
                 </Show>
                 <Show when="signed-in">
@@ -177,47 +158,19 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Search bar — CSS-toggle controlled */}
-          <div className="search-bar hidden border-t border-sand-dark bg-ivory-dark px-6 py-3 lg:px-12">
-            <input
-              type="text"
-              placeholder="Search for crafts, artisans, products..."
-              className="w-full bg-transparent text-sm text-charcoal outline-none"
-            />
-          </div>
-
           {/* Mobile menu — CSS-toggle controlled */}
           <div className="mobile-menu hidden border-t border-sand-dark bg-ivory lg:hidden">
             <ul className="py-4">
               {NAV_LINKS.map((link) => (
                 <li key={link}>
-                  <a
-                    href="#"
+                  <Link
+                    href={getNavHref(link)}
                     className="block px-6 py-3 text-sm font-medium text-charcoal hover:text-terracotta"
                   >
                     {link}
-                  </a>
+                  </Link>
                 </li>
               ))}
-              <li className="mt-2 flex items-center gap-6 border-t border-sand-dark px-6 pt-4">
-                <label
-                  htmlFor="search-toggle"
-                  className="flex cursor-pointer items-center gap-1.5 text-sm text-charcoal-light"
-                >
-                  <svg
-                    width="16"
-                    height="16"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                  >
-                    <circle cx="10.5" cy="10.5" r="6.5" />
-                    <path d="M15.5 15.5L20 20" strokeLinecap="round" />
-                  </svg>
-                  Search
-                </label>
-              </li>
             </ul>
           </div>
         </nav>

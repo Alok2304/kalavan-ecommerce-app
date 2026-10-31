@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const Newsletter = () => {
   return (
     <section
@@ -24,35 +26,12 @@ const Newsletter = () => {
           Discover new crafts, artisan stories and curated collections.
         </p>
 
-        <form
-          className="flex flex-col sm:flex-row gap-3"
-          action="#"
-          method="POST"
+        <Link
+          href="/crafts"
+          className="inline-flex min-h-12 items-center justify-center bg-terracotta px-7 py-3 text-sm font-medium tracking-wide text-ivory transition-colors hover:bg-terracotta-light focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory"
         >
-          <input
-            type="email"
-            name="email"
-            placeholder="Your email address"
-            required
-            className="flex-1 px-4 py-3 text-sm outline-none"
-            style={{
-              backgroundColor: "rgba(250,247,242,0.08)",
-              border: "1px solid rgba(212,201,188,0.3)",
-              color: "#FAF7F2",
-            }}
-          />
-          <button
-            type="submit"
-            className="px-7 py-3 text-sm font-medium tracking-wide flex-shrink-0 transition-colors duration-200 hover:bg-[#D4795A]"
-            style={{ backgroundColor: "#B85C38", color: "#FAF7F2" }}
-          >
-            Subscribe
-          </button>
-        </form>
-
-        <p className="text-xs mt-4" style={{ color: "#9C8878" }}>
-          No spam. Unsubscribe anytime.
-        </p>
+          Explore the collection
+        </Link>
       </div>
     </section>
   );

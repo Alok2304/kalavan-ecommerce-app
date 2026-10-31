@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const crafts = [
 	{
 		name: "Paithani",
@@ -45,7 +47,7 @@ const crafts = [
 
 function CraftCard({ name, tradition, image, alt }: (typeof crafts)[0]) {
 	return (
-		<a href="#" className="group block" style={{ borderRadius: 2 }}>
+		<Link href="/crafts" className="group block" style={{ borderRadius: 2 }}>
 			<div
 				className="relative overflow-hidden"
 				style={{
@@ -100,7 +102,7 @@ function CraftCard({ name, tradition, image, alt }: (typeof crafts)[0]) {
 					</svg>
 				</span>
 			</div>
-		</a>
+		</Link>
 	);
 }
 
@@ -142,3 +144,4 @@ const CraftsSection = () => {
 };
 
 export default CraftsSection;
+

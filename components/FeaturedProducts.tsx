@@ -1,58 +1,36 @@
 import Image from "next/image";
+import Link from "next/link";
 import AddToCartButton from "@/components/AddToCartButton";
+import { crafts } from "@/lib/crafts";
 
 const products = [
   {
+    ...crafts[0],
     id: 1,
-    name: "Kaas Floral Paithani",
-    artisan: "Savitri Handlooms",
-    location: "Yeola, Maharashtra",
     rating: 4.8,
     reviews: 124,
-    price: 8499,
     originalPrice: 10200,
-    image:
-      "https://images.unsplash.com/photo-1786871204247-60f342ae81a8?w=600&h=720&fit=crop&auto=format",
-    alt: "Handwoven Paithani silk textile on a loom",
   },
   {
+    ...crafts[1],
     id: 2,
-    name: "Warli Terracotta Pot",
-    artisan: "Ramesh Mati Kala",
-    location: "Nashik, Maharashtra",
     rating: 4.6,
     reviews: 87,
-    price: 1850,
     originalPrice: null,
-    image:
-      "https://images.unsplash.com/photo-1715845779797-ee1e42374925?w=600&h=720&fit=crop&auto=format",
-    alt: "Artisan's hands on a pottery wheel shaping clay",
   },
   {
+    ...crafts[2],
     id: 3,
-    name: "Kolhapuri Pearl Set",
-    artisan: "Anita Jewel Works",
-    location: "Kolhapur, Maharashtra",
     rating: 4.9,
     reviews: 203,
-    price: 3299,
     originalPrice: 4500,
-    image:
-      "https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?w=600&h=720&fit=crop&auto=format",
-    alt: "Gold and purple beaded traditional jewellery",
   },
   {
+    ...crafts[5],
     id: 4,
-    name: "Bamboo Craft Lantern",
-    artisan: "Tribal Craft Co.",
-    location: "Gadchiroli, Maharashtra",
     rating: 4.5,
     reviews: 56,
-    price: 1299,
     originalPrice: null,
-    image:
-      "https://images.unsplash.com/photo-1764218057040-5427eb0f1f5a?w=600&h=720&fit=crop&auto=format",
-    alt: "Colorful decorated handmade lanterns",
   },
 ];
 
@@ -88,36 +66,31 @@ function ProductCard({ product }: { product: (typeof products)[0] }) {
           borderRadius: 2,
         }}
       >
-        <Image
-          src={product.image}
-          alt={product.alt}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
-        />
-        {/* Wishlist — static icon, no toggle state */}
-        <button
-          className="absolute top-3 right-3 w-8 h-8 flex items-center justify-center rounded-full transition-all duration-200 hover:scale-110"
-          style={{ backgroundColor: "rgba(250,247,242,0.9)" }}
-          aria-label="Add to wishlist"
+        <Link
+          href={`/crafts/${product.slug}`}
+          aria-label={`View ${product.title}`}
+          className="absolute inset-0 block"
         >
-          <svg
-            width="15"
-            height="15"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="#4A3C2E"
-            strokeWidth="1.75"
-          >
-            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-          </svg>
-        </button>
-
+          <Image
+            src={product.image}
+            alt={product.alt}
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+          />
+        </Link>
         {/* Add to Cart — CSS hover reveal */}
-        <div className="absolute bottom-0 left-0 right-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300">
+        <div className="absolute bottom-0 left-0 right-0 translate-y-0 transition-transform duration-300 sm:translate-y-full sm:group-hover:translate-y-0">
           <AddToCartButton
-            product={{ id: `featured-${product.id}`, name: product.name, artisan: product.artisan, price: product.price, image: product.image, alt: product.alt }}
-            className="w-full py-3 text-sm font-medium tracking-wide transition-colors duration-150 hover:bg-[#B85C38]"
+            product={{
+              id: `craft-${product.slug}`,
+              name: product.title,
+              artisan: product.artisan,
+              price: product.price,
+              image: product.image,
+              alt: product.alt,
+            }}
+            className="w-full py-3 text-sm font-medium tracking-wide transition-colors duration-150 hover:bg-terracotta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ivory"
             style={{ backgroundColor: "#2C2416", color: "#FAF7F2" }}
           >
             Add to Cart
@@ -131,13 +104,18 @@ function ProductCard({ product }: { product: (typeof products)[0] }) {
           className="font-serif text-base font-medium leading-snug"
           style={{ color: "#2C2416" }}
         >
-          {product.name}
+          <Link
+            href={`/crafts/${product.slug}`}
+            className="transition-colors hover:text-terracotta focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta"
+          >
+            {product.title}
+          </Link>
         </h3>
         <p className="text-xs" style={{ color: "#6B5B4E" }}>
           {product.artisan}
         </p>
         <p className="text-xs" style={{ color: "#9C8878" }}>
-          {product.location}
+          {product.place}
         </p>
         <div className="flex items-center gap-1.5 mt-1">
           <StarRating rating={product.rating} />
@@ -183,9 +161,9 @@ const FeaturedProducts = () => {
               Featured Crafts
             </h2>
           </div>
-          <a
-            href="#"
-            className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-[#B85C38]"
+          <Link
+            href="/crafts"
+            className="hidden sm:inline-flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-terracotta"
             style={{ color: "#6B5B4E" }}
           >
             View all crafts
@@ -203,7 +181,7 @@ const FeaturedProducts = () => {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </Link>
         </div>
 
         {/* Desktop 4-col grid */}
@@ -216,7 +194,7 @@ const FeaturedProducts = () => {
         {/* Mobile horizontal scroll carousel */}
         <div className="lg:hidden flex gap-5 overflow-x-auto scrollbar-hide pb-4 -mx-6 px-6">
           {products.map((p) => (
-            <div key={p.id} className="flex-shrink-0 w-56">
+            <div key={p.id} className="shrink-0 w-56">
               <ProductCard product={p} />
             </div>
           ))}

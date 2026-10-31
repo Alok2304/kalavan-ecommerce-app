@@ -106,7 +106,7 @@ const CraftPage = () => {
           <div className="mx-auto max-w-7xl">
             <nav aria-label="Breadcrumb" className="mb-8">
               <ol className="flex items-center gap-2 text-xs tracking-wide text-muted">
-                <li>
+                {/* <li>
                   <Link
                     href="/"
                     className="transition-colors hover:text-terracotta"
@@ -115,7 +115,7 @@ const CraftPage = () => {
                   </Link>
                 </li>
                 <li aria-hidden="true">/</li>
-                <li className="text-charcoal">Crafts</li>
+                <li className="text-charcoal">Crafts</li> */}
               </ol>
             </nav>
 
@@ -127,7 +127,7 @@ const CraftPage = () => {
                 <h1 className="max-w-3xl font-serif text-4xl font-semibold leading-tight text-charcoal sm:text-5xl lg:text-6xl">
                   Crafts with a story
                 </h1>
-                <p className="mt-5 max-w-2xl text-base leading-7 text-muted">
+                <p className="mt-5 max-w-2xl text-base leading-7 text-charcoal">
                   Explore heirloom textiles, earth-born pottery and intricate
                   objects shaped by the hands of independent artisans across
                   Maharashtra.
@@ -169,7 +169,7 @@ const CraftPage = () => {
                 ].map((category, index) => (
                   <span
                     key={category}
-                    className={`border px-3 py-1.5 text-xs font-medium ${index === 0 ? "border-charcoal bg-charcoal text-ivory" : "border-sand-dark text-muted"}`}
+                    className={`border px-3 py-1.5 text-xs font-medium ${index === 0 ? "border-charcoal bg-charcoal text-ivory" : "border-sand-dark"}`}
                   >
                     {category}
                   </span>

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const ArtisanStory = () => {
   return (
@@ -88,8 +89,8 @@ const ArtisanStory = () => {
             </div>
           </div>
 
-          <a
-            href="#"
+          <Link
+            href="/artisans"
             className="inline-flex items-center gap-2 border border-charcoal px-7 py-3 text-sm font-medium tracking-wide text-charcoal transition-colors duration-200 hover:bg-charcoal hover:text-ivory"
           >
             Meet Our Artisans
@@ -107,7 +108,7 @@ const ArtisanStory = () => {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

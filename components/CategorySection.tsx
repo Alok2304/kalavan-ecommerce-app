@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const categories = [
   {
     name: "Textiles",
@@ -47,8 +49,8 @@ function CategoryCard({
   alt: string;
 }) {
   return (
-    <a
-      href="#"
+    <Link
+      href="/crafts"
       className="group block relative overflow-hidden cursor-pointer"
       style={{ borderRadius: 2 }}
     >
@@ -77,7 +79,7 @@ function CategoryCard({
           {name}
         </span>
       </div>
-    </a>
+    </Link>
   );
 }
 
@@ -103,8 +105,8 @@ const CategorySection = () => {
             Shop by Category
           </h2>
         </div>
-        <a
-          href="#"
+        <Link
+          href="/crafts"
           className="hidden items-center gap-1.5 text-sm font-medium text-muted transition-colors hover:text-terracotta sm:inline-flex"
         >
           View all
@@ -122,7 +124,7 @@ const CategorySection = () => {
               strokeLinejoin="round"
             />
           </svg>
-        </a>
+        </Link>
       </div>
 
       {/* Grid */}
@@ -136,3 +138,4 @@ const CategorySection = () => {
 };
 
 export default CategorySection;
+

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -48,8 +49,8 @@ const Hero = () => {
             local artisans.
           </p>
           <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
-            <a
-              href="#"
+            <Link
+              href="/crafts"
               className="inline-flex min-h-12 items-center justify-center gap-2 bg-terracotta px-7 py-3 text-sm font-medium tracking-wide text-ivory transition-colors duration-200 hover:bg-terracotta-light focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory"
             >
               Explore Crafts
@@ -68,13 +69,13 @@ const Hero = () => {
                   strokeLinejoin="round"
                 />
               </svg>
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              href="/artisans"
               className="inline-flex min-h-12 items-center justify-center gap-2 border border-sand-dark px-7 py-3 text-sm font-medium tracking-wide text-ivory transition-colors duration-200 hover:border-ivory focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ivory"
             >
               Meet the Artisans
-            </a>
+            </Link>
           </div>
         </div>
       </div>

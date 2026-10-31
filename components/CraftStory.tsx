@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const CraftStory = () => {
   return (
 	<section
@@ -31,8 +33,8 @@ const CraftStory = () => {
 			tradition. When you hold a Kalavana product, you hold that
 			inheritance.
 		  </p>
-		  <a
-			href="#"
+		  <Link
+			href="/about"
 			className="inline-flex items-center gap-2 border-b border-terracotta pb-0.5 text-sm font-medium tracking-wide text-terracotta transition-colors duration-200 hover:border-charcoal hover:text-charcoal"
 		  >
 			Read Craft Stories
@@ -50,7 +52,7 @@ const CraftStory = () => {
 				strokeLinejoin="round"
 			  />
 			</svg>
-		  </a>
+		  </Link>
 		</div>
 
 		{/* Image */}
@@ -85,3 +87,4 @@ const CraftStory = () => {
 };
 
 export default CraftStory;
+

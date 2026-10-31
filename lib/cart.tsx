@@ -129,9 +129,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     (id: string, quantity: number) => {
       if (!userId) return;
       updateCart(userId, (current) =>
-        current.map((item) =>
-          item.id === id ? { ...item, quantity: Math.max(1, quantity) } : item,
-        ),
+        quantity <= 0
+          ? current.filter((item) => item.id !== id)
+          : current.map((item) =>
+              item.id === id ? { ...item, quantity } : item,
+            ),
       );
     },
     [userId],
