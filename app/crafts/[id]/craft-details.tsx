@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { notFound } from "next/navigation";
 import AddToCartButton from "@/components/AddToCartButton";
-import { getCraftBySlug } from "@/lib/crafts";
+import { getProducts } from "@/lib/supabase";
 
 export default async function CraftDetails({
   params,
@@ -9,7 +9,8 @@ export default async function CraftDetails({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const craft = getCraftBySlug(id);
+  const crafts = await getProducts();
+  const craft = crafts.find((item) => item.slug === id);
 
   if (!craft) notFound();
 

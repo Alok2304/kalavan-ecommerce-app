@@ -62,7 +62,7 @@ const AboutPage = () => {
                     Shared with the world.
                   </em>
                 </h1>
-                <p className="mt-7 max-w-xl text-base leading-8 text-muted">
+                <p className="mt-7 max-w-xl text-base leading-8 text-charcoal">
                   Kalavana is a home for authentic Maharashtrian craft. We bring
                   independent artisans and thoughtful customers together, so
                   every handmade object can be valued for the skill, culture and
@@ -124,7 +124,7 @@ const AboutPage = () => {
                 More than a marketplace
               </h2>
             </div>
-            <div className="grid gap-6 text-base leading-8 text-muted sm:grid-cols-2">
+            <div className="grid gap-6 text-base leading-8 text-charcoal sm:grid-cols-2">
               <p>
                 Maharashtra’s craft traditions are shaped by generations of
                 knowledge, yet many skilled makers remain separated from the
@@ -162,7 +162,7 @@ const AboutPage = () => {
                   <h3 className="mt-7 font-serif text-2xl font-semibold text-charcoal">
                     {value.title}
                   </h3>
-                  <p className="mt-4 text-sm leading-7 text-muted">
+                  <p className="mt-4 text-sm leading-7 text-charcoal">
                     {value.description}
                   </p>
                 </article>

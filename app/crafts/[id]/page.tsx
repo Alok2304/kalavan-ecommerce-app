@@ -1,20 +1,17 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import Link from "next/link";
-import { crafts, getCraftBySlug } from "@/lib/crafts";
+import { getProducts } from "@/lib/supabase";
 import CraftDetails from "./craft-details";
 
 type CraftPageProps = {
   params: Promise<{ id: string }>;
 };
 
-export function generateStaticParams() {
-  return crafts.map((craft) => ({ id: craft.slug }));
-}
-
 export async function generateMetadata({ params }: CraftPageProps): Promise<Metadata> {
   const { id } = await params;
-  const craft = getCraftBySlug(id);
+  const crafts = await getProducts();
+  const craft = crafts.find((item) => item.slug === id);
   if (!craft) return { title: "Craft not found | Kalavana" };
 
   return {

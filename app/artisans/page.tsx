@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { crafts } from "@/lib/crafts";
+import { getProducts } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "Meet the Artisans | Kalavana",
@@ -9,7 +9,8 @@ export const metadata: Metadata = {
     "Meet the independent studios and artisan collectives behind Kalavana's handmade crafts from across Maharashtra.",
 };
 
-const artisans = Array.from(
+function groupArtisans(crafts: Awaited<ReturnType<typeof getProducts>>) {
+  return Array.from(
   crafts
     .reduce((groups, craft) => {
       const group = groups.get(craft.artisan) ?? [];
@@ -19,8 +20,9 @@ const artisans = Array.from(
     }, new Map<string, typeof crafts>())
     .entries(),
 ).map(([name, work]) => ({ name, work }));
+}
 
-function ArtisanCard({ artisan }: { artisan: (typeof artisans)[number] }) {
+function ArtisanCard({ artisan }: { artisan: ReturnType<typeof groupArtisans>[number] }) {
   const featuredCraft = artisan.work[0];
 
   return (
@@ -66,7 +68,8 @@ function ArtisanCard({ artisan }: { artisan: (typeof artisans)[number] }) {
   );
 }
 
-export default function ArtisansPage() {
+export default async function ArtisansPage() {
+  const artisans = groupArtisans(await getProducts());
   return (
     <main className="min-h-screen bg-ivory pb-24 pt-22 lg:pb-32">
       <header className="border-b border-sand-dark bg-ivory-dark px-6 py-16 lg:px-[6vw] lg:py-24">

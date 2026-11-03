@@ -1,37 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import AddToCartButton from "@/components/AddToCartButton";
-import { crafts } from "@/lib/crafts";
+import { getProducts } from "@/lib/supabase";
+import type { Craft } from "@/lib/crafts";
 
-const products = [
-  {
-    ...crafts[0],
-    id: 1,
-    rating: 4.8,
-    reviews: 124,
-    originalPrice: 10200,
-  },
-  {
-    ...crafts[1],
-    id: 2,
-    rating: 4.6,
-    reviews: 87,
-    originalPrice: null,
-  },
-  {
-    ...crafts[2],
-    id: 3,
-    rating: 4.9,
-    reviews: 203,
-    originalPrice: 4500,
-  },
-  {
-    ...crafts[5],
-    id: 4,
-    rating: 4.5,
-    reviews: 56,
-    originalPrice: null,
-  },
+type FeaturedCraft = Craft & {
+  id: number;
+  rating: number;
+  reviews: number;
+  originalPrice: number | null;
+};
+
+const featuredDetails = [
+  { rating: 4.8, reviews: 124, originalPrice: 10200 },
+  { rating: 4.6, reviews: 87, originalPrice: null },
+  { rating: 4.9, reviews: 203, originalPrice: 4500 },
+  { rating: 4.5, reviews: 56, originalPrice: null },
 ];
 
 function StarRating({ rating }: { rating: number }) {
@@ -54,7 +38,7 @@ function StarRating({ rating }: { rating: number }) {
   );
 }
 
-function ProductCard({ product }: { product: (typeof products)[0] }) {
+function ProductCard({ product }: { product: FeaturedCraft }) {
   return (
     <div className="group flex flex-col" style={{ minWidth: 220 }}>
       {/* Image container */}
@@ -141,7 +125,16 @@ function ProductCard({ product }: { product: (typeof products)[0] }) {
   );
 }
 
-const FeaturedProducts = () => {
+const FeaturedProducts = async () => {
+  const catalog = await getProducts();
+  const products = [0, 1, 2, 5]
+    .map((index, position) => {
+      const craft = catalog[index];
+      const details = featuredDetails[position];
+      return craft && details ? { ...craft, ...details, id: position + 1 } : null;
+    })
+    .filter((product): product is FeaturedCraft => product !== null);
+
   return (
     <section className="py-20 lg:py-28" style={{ backgroundColor: "#F4EFE8" }}>
       <div className="px-6 lg:px-[6vw]">

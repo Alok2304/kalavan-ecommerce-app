@@ -3,56 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState, type FormEvent } from "react";
-import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart";
-
-type RazorpayResult = {
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
-  razorpay_signature: string;
-};
-type RazorpayOptions = {
-  key: string;
-  amount: number;
-  currency: string;
-  name: string;
-  description: string;
-  order_id: string;
-  prefill: { name: string; email: string; contact: string };
-  theme: { color: string };
-  handler: (result: RazorpayResult) => void;
-  modal: { ondismiss: () => void };
-};
-declare global {
-  interface Window {
-    Razorpay?: new (options: RazorpayOptions) => {
-      open: () => void;
-      on: (
-        event: string,
-        callback: (response: { error?: { description?: string } }) => void,
-      ) => void;
-    };
-  }
-}
 
 const money = (amount: number) => `₹${amount.toLocaleString("en-IN")}`;
 
-function loadRazorpay() {
-  if (window.Razorpay) return Promise.resolve(true);
-  return new Promise<boolean>((resolve) => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onload = () => resolve(Boolean(window.Razorpay));
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-}
-
 export default function CheckoutPage() {
   const { items, removeItem } = useCart();
-  const router = useRouter();
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
+  const [orderNumber, setOrderNumber] = useState("");
   const subtotal = items.reduce(
     (sum, item) => sum + item.price * item.quantity,
     0,
@@ -93,55 +52,8 @@ export default function CheckoutPage() {
       const order = await orderResponse.json();
       if (!orderResponse.ok)
         throw new Error(order.error || "Could not start checkout.");
-      if (!(await loadRazorpay()) || !window.Razorpay)
-        throw new Error(
-          "Payment checkout could not be loaded. Please check your connection and try again.",
-        );
-
-      const checkout = new window.Razorpay({
-        key: order.keyId,
-        amount: order.amount,
-        currency: order.currency,
-        name: "Kalavan",
-        description: "Handcrafted pieces from Indian artisans",
-        order_id: order.orderId,
-        prefill: { name: order.name, email: order.email, contact: order.phone },
-        theme: { color: "#a84f3d" },
-        handler: async (payment) => {
-          try {
-            const verifyResponse = await fetch("/api/payments/verify", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                orderId: payment.razorpay_order_id,
-                paymentId: payment.razorpay_payment_id,
-                signature: payment.razorpay_signature,
-              }),
-            });
-            const result = await verifyResponse.json();
-            if (!verifyResponse.ok)
-              throw new Error(result.error || "Payment verification failed.");
-            items.forEach((item) => removeItem(item.id));
-            router.push(result.invoiceUrl);
-          } catch (reason) {
-            setError(
-              reason instanceof Error
-                ? `${reason.message} If your account was charged, contact us with your payment confirmation.`
-                : "Payment verification failed. Please contact us if you were charged.",
-            );
-            setBusy(false);
-          }
-        },
-        modal: { ondismiss: () => setBusy(false) },
-      });
-      checkout.on("payment.failed", (response) => {
-        setError(
-          response.error?.description ||
-            "Payment was not completed. Please try again.",
-        );
-        setBusy(false);
-      });
-      checkout.open();
+      setOrderNumber(order.orderNumber);
+      items.forEach((item) => removeItem(item.id));
     } catch (reason) {
       setError(
         reason instanceof Error
@@ -150,6 +62,19 @@ export default function CheckoutPage() {
       );
       setBusy(false);
     }
+  }
+
+  if (orderNumber) {
+    return (
+      <main className="min-h-screen bg-ivory px-6 pb-24 pt-32 text-center">
+        <div className="mx-auto max-w-xl border border-sand-dark bg-white p-10">
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-terracotta">Order confirmed</p>
+          <h1 className="mt-3 font-serif text-4xl font-semibold text-charcoal">Thank you for your order</h1>
+          <p className="mt-5 text-sm leading-6 text-muted">Your order number is <strong className="text-charcoal">{orderNumber}</strong>. Pay cash when your handcrafted pieces are delivered.</p>
+          <Link href="/crafts" className="mt-8 inline-flex bg-charcoal px-6 py-3 text-sm font-medium text-ivory">Continue exploring</Link>
+        </div>
+      </main>
+    );
   }
 
   return (
@@ -272,10 +197,10 @@ export default function CheckoutPage() {
               </h2>
               <div className="mt-5 border border-sand-dark bg-ivory-dark p-4">
                 <p className="text-sm font-medium text-charcoal">
-                  Secure online payment
+                  Cash on Delivery
                 </p>
                 <p className="mt-1 text-xs leading-5 text-charcoal">
-                  Pay by UPI, card, net banking or wallet through Razorpay.
+                  Pay in cash when your order arrives.
                 </p>
               </div>
             </section>
@@ -305,9 +230,7 @@ export default function CheckoutPage() {
                 type="submit"
                 className="w-full bg-charcoal px-6 py-4 text-sm font-semibold text-ivory transition-colors hover:bg-terracotta disabled:cursor-wait disabled:opacity-60"
               >
-                {busy
-                  ? "Connecting to secure checkout…"
-                  : `Pay securely · ${money(subtotal + shipping)}`}
+                {busy ? "Placing your order…" : `Place order · ${money(subtotal + shipping)}`}
               </button>
             )}
           </form>

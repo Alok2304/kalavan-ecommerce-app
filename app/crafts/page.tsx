@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import AddToCartButton from "@/components/AddToCartButton";
-import { crafts } from "@/lib/crafts";
+import { getProducts } from "@/lib/supabase";
 
 export const metadata: Metadata = {
   title: "Shop Maharashtrian Crafts | Kalavana",
@@ -29,7 +29,7 @@ function CartIcon() {
   );
 }
 
-function CraftCard({ craft }: { craft: (typeof crafts)[number] }) {
+function CraftCard({ craft }: { craft: Awaited<ReturnType<typeof getProducts>>[number] }) {
   const title = (
     <h2 className="font-serif text-lg font-semibold leading-snug text-charcoal transition-colors group-hover:text-terracotta">
       {craft.title}
@@ -98,7 +98,8 @@ function CraftCard({ craft }: { craft: (typeof crafts)[number] }) {
   );
 }
 
-const CraftPage = () => {
+const CraftPage = async () => {
+	const crafts = await getProducts();
 	return (
     <div className="min-h-screen bg-ivory">
       <main className="pb-24 pt-22 lg:pb-32">
