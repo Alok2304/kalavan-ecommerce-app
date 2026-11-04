@@ -75,6 +75,7 @@ const trustItems = [
 const TrustSection = () => {
   return (
     <section
+      id="trust"
       className="py-16 lg:py-20 px-6 lg:px-[6vw] border-t border-b"
       style={{ borderColor: "#D4C9BC", backgroundColor: "#FAF7F2" }}
     >

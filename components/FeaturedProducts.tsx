@@ -136,7 +136,7 @@ const FeaturedProducts = async () => {
     .filter((product): product is FeaturedCraft => product !== null);
 
   return (
-    <section className="py-20 lg:py-28" style={{ backgroundColor: "#F4EFE8" }}>
+    <section id="featured" className="py-20 lg:py-28" style={{ backgroundColor: "#F4EFE8" }}>
       <div className="px-6 lg:px-[6vw]">
         {/* Header */}
         <div className="flex items-end justify-between mb-10 lg:mb-14">

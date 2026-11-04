@@ -42,6 +42,10 @@ Checkout uses Cash on Delivery. The server validates each cart against the live 
 
 The product catalog and artisan directory are stored in the remote Supabase PostgreSQL database and read through its PostgREST API. Apply `supabase/migrations/202611030001_initial_schema.sql` in the Supabase SQL Editor (or with the Supabase CLI) to create the tables, read policies, and seed the current catalog. Store `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, and the server-only `SUPABASE_SERVICE_ROLE_KEY` in `.env.local` using `.env.example` as a guide. The catalog now reports connection/configuration errors instead of silently showing bundled sample products.
 
+### Website feedback
+
+Apply `supabase/migrations/202611040001_website_feedback.sql` in the Supabase SQL Editor to create the feedback table. Feedback submissions use the public Supabase key with an insert-only row-level security policy; feedback cannot be read by public clients. No service role key is required for feedback submissions.
+
 In Clerk, add a webhook pointing to `/api/webhooks/clerk` and subscribe to `user.created`, `user.updated`, and `user.deleted`. Set its signing secret as `CLERK_WEBHOOK_SIGNING_SECRET`. Clerk remains the authentication provider; the `profiles` table mirrors the user's Clerk ID, primary email, display name, and avatar URL.
 
 ### Roles and access control

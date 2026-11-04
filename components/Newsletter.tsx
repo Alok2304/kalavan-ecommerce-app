@@ -3,6 +3,7 @@ import Link from "next/link";
 const Newsletter = () => {
   return (
     <section
+      id="newsletter"
       className="py-20 lg:py-24 px-6 lg:px-[6vw]"
       style={{ backgroundColor: "#2C2416" }}
     >

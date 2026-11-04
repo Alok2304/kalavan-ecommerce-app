@@ -66,6 +66,14 @@ const Footer = () => (
               About Kalavana
             </Link>
           </li>
+          <li>
+            <Link
+              href="/feedback"
+              className="text-sm text-charcoal-light transition-colors hover:text-terracotta"
+            >
+              Share feedback
+            </Link>
+          </li>
         </ul>
       </div>
     </div>

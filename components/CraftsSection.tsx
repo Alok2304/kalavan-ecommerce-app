@@ -109,6 +109,7 @@ function CraftCard({ name, tradition, image, alt }: (typeof crafts)[0]) {
 const CraftsSection = () => {
 	return (
 		<section
+			id="crafts"
 			className="py-20 lg:py-28 px-6 lg:px-[6vw]"
 			style={{ backgroundColor: "#F4EFE8" }}
 		>

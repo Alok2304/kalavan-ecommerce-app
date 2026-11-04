@@ -1,6 +1,8 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { Show, UserButton } from "@clerk/nextjs";
 import CartLink from "@/components/CartLink";
 
@@ -40,18 +42,11 @@ function getDropdown(link: string) {
 }
 
 const Navbar = () => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
     <nav>
-      {/* CSS-only mobile menu toggle */}
-      <style>{`
-        #mobile-toggle:checked ~ nav .mobile-menu { display: block; }
-        #mobile-toggle:checked ~ nav .hamburger-top { transform: rotate(45deg) translate(5px, 5px); }
-        #mobile-toggle:checked ~ nav .hamburger-mid { opacity: 0; }
-        #mobile-toggle:checked ~ nav .hamburger-bot { transform: rotate(-45deg) translate(5px, -5px); }
-        .nav-item:hover .nav-dropdown { display: block; }
-      `}</style>
-
-      <input type="checkbox" id="mobile-toggle" className="hidden" />
+      <style>{`.nav-item:hover .nav-dropdown, .nav-item:focus-within .nav-dropdown { display: block; }`}</style>
 
       <header className="fixed top-0 left-0 right-0 z-50 border-b border-sand-dark bg-ivory">
         {/* Announcement Bar */}
@@ -146,33 +141,45 @@ const Navbar = () => {
               </Suspense>
 
               {/* Mobile hamburger */}
-              <label
-                htmlFor="mobile-toggle"
-                className="lg:hidden flex flex-col gap-1.5 p-1 cursor-pointer"
-                aria-label="Open menu"
+              <button
+                type="button"
+                className="flex size-11 flex-col items-center justify-center gap-1.5 rounded-sm text-charcoal hover:bg-ivory-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-terracotta lg:hidden"
+                aria-label={menuOpen ? "Close menu" : "Open menu"}
+                aria-expanded={menuOpen}
+                aria-controls="mobile-menu"
+                onClick={() => setMenuOpen((open) => !open)}
               >
-                <span className="hamburger-top block h-0.5 w-5 bg-charcoal transition-all duration-200" />
-                <span className="hamburger-mid block h-0.5 w-5 bg-charcoal transition-all duration-200" />
-                <span className="hamburger-bot block h-0.5 w-5 bg-charcoal transition-all duration-200" />
-              </label>
+                <span className={`block h-0.5 w-5 bg-current transition-transform ${menuOpen ? "translate-y-2 rotate-45" : ""}`} />
+                <span className={`block h-0.5 w-5 bg-current transition-opacity ${menuOpen ? "opacity-0" : ""}`} />
+                <span className={`block h-0.5 w-5 bg-current transition-transform ${menuOpen ? "-translate-y-2 -rotate-45" : ""}`} />
+              </button>
             </div>
           </div>
 
           {/* Mobile menu — CSS-toggle controlled */}
-          <div className="mobile-menu hidden border-t border-sand-dark bg-ivory lg:hidden">
-            <ul className="py-4">
-              {NAV_LINKS.map((link) => (
-                <li key={link}>
+          {menuOpen && <div id="mobile-menu" className="max-h-[calc(100svh-6rem)] overflow-y-auto border-t border-sand-dark bg-ivory lg:hidden">
+            <ul className="space-y-1 px-4 py-3">
+              {NAV_LINKS.map((link) => {
+                const dropdown = getDropdown(link);
+                return <li key={link}>
                   <Link
                     href={getNavHref(link)}
-                    className="block px-6 py-3 text-sm font-medium text-charcoal hover:text-terracotta"
+                    onClick={() => setMenuOpen(false)}
+                    className="block rounded-sm px-3 py-3 text-sm font-semibold text-charcoal hover:bg-ivory-dark hover:text-terracotta"
                   >
                     {link}
                   </Link>
-                </li>
-              ))}
+                  {dropdown && <ul className="grid grid-cols-2 gap-1 pb-2 pl-3">
+                    {dropdown.map((item) => <li key={item}><Link href="/crafts" onClick={() => setMenuOpen(false)} className="block rounded-sm px-3 py-2 text-sm text-muted hover:bg-ivory-dark hover:text-terracotta">{item}</Link></li>)}
+                  </ul>}
+                </li>;
+              })}
             </ul>
-          </div>
+            <div className="border-t border-sand-dark px-4 py-3">
+              <p className="px-3 pb-1 text-xs font-semibold uppercase tracking-[0.16em] text-terracotta">On the home page</p>
+              {[["Shop by category", "#categories"], ["Featured products", "#featured"], ["Meet our artisans", "#artisans"], ["Crafts of Maharashtra", "#crafts"], ["Our craft story", "#craft-story"], ["Why Kalavana", "#trust"], ["Newsletter", "#newsletter"]].map(([label, href]) => <Link key={href} href={`/${href}`} onClick={() => setMenuOpen(false)} className="block rounded-sm px-3 py-2.5 text-sm text-muted hover:bg-ivory-dark hover:text-terracotta">{label}</Link>)}
+            </div>
+          </div>}
         </nav>
       </header>
     </nav>

@@ -86,6 +86,7 @@ function CategoryCard({
 const CategorySection = () => {
   return (
     <section
+      id="categories"
       className="py-20 lg:py-28 px-6 lg:px-[6vw]"
       style={{ backgroundColor: "#FAF7F2" }}
     >

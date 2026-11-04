@@ -152,3 +152,39 @@ export async function saveCashOnDeliveryOrder(order: {
   });
   if (!response.ok) throw new Error(`Supabase order save failed (${response.status}).`);
 }
+
+/** Stores public website experience feedback through the table's insert-only RLS policy. */
+export async function saveWebsiteFeedback(feedback: {
+  name: string;
+  email: string;
+  rating: number;
+  topic: string;
+  message: string;
+}) {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY ?? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) throw new Error("Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY.");
+
+  const response = await fetch(`${url.replace(/\/$/, "")}/rest/v1/website_feedback`, {
+    method: "POST",
+    headers: {
+      apikey: key,
+      Authorization: `Bearer ${key}`,
+      "Content-Type": "application/json",
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify(feedback),
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    const detail = await response.text();
+    console.error("Supabase feedback insert rejected:", response.status, detail);
+    if (response.status === 404 || detail.includes("website_feedback")) {
+      throw new Error("The feedback table is missing. Apply the website feedback Supabase migration, then try again.");
+    }
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("Supabase rejected the feedback insert. Apply the website feedback migration and check its insert policy.");
+    }
+    throw new Error("Supabase could not save feedback. Please try again later.");
+  }
+}
