@@ -74,6 +74,22 @@ const Footer = () => (
               Share feedback
             </Link>
           </li>
+          <li>
+            <Link
+              href="/privacy"
+              className="text-sm text-charcoal-light transition-colors hover:text-terracotta"
+            >
+              Privacy policy
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/terms"
+              className="text-sm text-charcoal-light transition-colors hover:text-terracotta"
+            >
+              Terms of service
+            </Link>
+          </li>
         </ul>
       </div>
     </div>
