@@ -22,9 +22,9 @@ const sections = [
         </p>
         <p>
           When you use the website, essential technologies used for sign-in and
-          site operation may store information in your browser. Your signed-in
-          cart is saved in your browser&apos;s local storage and is associated
-          with your account on that device.
+          site operation may store information in your browser. Your cart is
+          saved in your browser&apos;s local storage on that device, whether or
+          not you are signed in.
         </p>
       </>
     ),

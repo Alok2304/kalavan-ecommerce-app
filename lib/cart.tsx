@@ -96,22 +96,23 @@ function updateCart(userId: string, update: (items: CartLine[]) => CartLine[]) {
 
 export function CartProvider({ children }: { children: React.ReactNode }) {
   const { user } = useUser();
-  const userId = user?.id;
+  // Keep existing account carts intact while giving signed-out visitors their
+  // own persistent browser cart.
+  const cartId = user?.id ?? "guest";
 
   const subscribe = useCallback(
-    (notify: () => void) => (userId ? subscribeToCart(userId, notify) : () => {}),
-    [userId],
+    (notify: () => void) => subscribeToCart(cartId, notify),
+    [cartId],
   );
   const getSnapshot = useCallback(
-    () => (userId ? readCart(userId) : EMPTY_CART),
-    [userId],
+    () => readCart(cartId),
+    [cartId],
   );
   const items = useSyncExternalStore(subscribe, getSnapshot, () => EMPTY_CART);
 
   const addItem = useCallback(
     (product: CartProduct) => {
-      if (!userId) return;
-      updateCart(userId, (current) => {
+      updateCart(cartId, (current) => {
         const found = current.find((item) => item.id === product.id);
         return found
           ? current.map((item) =>
@@ -122,13 +123,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           : [...current, { ...product, quantity: 1 }];
       });
     },
-    [userId],
+    [cartId],
   );
 
   const setQuantity = useCallback(
     (id: string, quantity: number) => {
-      if (!userId) return;
-      updateCart(userId, (current) =>
+      updateCart(cartId, (current) =>
         quantity <= 0
           ? current.filter((item) => item.id !== id)
           : current.map((item) =>
@@ -136,15 +136,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             ),
       );
     },
-    [userId],
+    [cartId],
   );
 
   const removeItem = useCallback(
     (id: string) => {
-      if (!userId) return;
-      updateCart(userId, (current) => current.filter((item) => item.id !== id));
+      updateCart(cartId, (current) => current.filter((item) => item.id !== id));
     },
-    [userId],
+    [cartId],
   );
 
   const value = useMemo(
