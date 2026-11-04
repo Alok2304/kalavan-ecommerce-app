@@ -39,6 +39,7 @@ const SignUpPage = () => {
         <div className="flex items-center justify-center px-5 py-10 sm:px-10 md:px-12">
           <Suspense fallback={null}>
             <SignUp
+              signInUrl="/sign-in"
               appearance={{
                 variables: {
                   colorPrimary: "#b85c38",

@@ -4,7 +4,7 @@ import { Suspense } from "react";
 const SignInPage = () => {
   return (
     <main className="px-4 pb-16 pt-32 sm:px-6 lg:px-8">
-      <section className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-2xl border border-sand-dark/70 bg-white shadow-[0_24px_80px_rgba(44,36,22,0.08)] md:min-h-[570px] md:grid-cols-[0.9fr_1.1fr]">
+      <section className="mx-auto grid w-full max-w-5xl overflow-hidden rounded-2xl border border-sand-dark/70 bg-white shadow-[0_24px_80px_rgba(44,36,22,0.08)] md:min-h-142.5 md:grid-cols-[0.9fr_1.1fr]">
         <div className="relative flex flex-col justify-between overflow-hidden bg-terracotta px-8 py-10 text-ivory sm:px-12 sm:py-12 md:px-14 md:py-14">
           <div
             aria-hidden="true"
